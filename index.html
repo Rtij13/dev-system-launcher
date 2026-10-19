@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dev System Launcher</title>
+<style>
+  :root { --bg:#fafafa; --card:#fff; --text:#1f2328; --muted:#59636e; --border:#e1e4e8; --accent:#2563eb; }
+  @media (prefers-color-scheme: dark) {
+    :root { --bg:#0f1115; --card:#171a21; --text:#e6e8eb; --muted:#9aa4b1; --border:#2a2f3a; --accent:#60a5fa; }
+  }
+  * { box-sizing: border-box; }
+  body { margin:0; background:var(--bg); color:var(--text);
+    font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif; }
+  main { max-width:720px; margin:0 auto; padding:32px 20px 48px; }
+  h1 { font-size:1.9rem; margin:0 0 8px; }
+  h2 { font-size:1.15rem; margin:32px 0 12px; }
+  p.lead { color:var(--muted); margin:0; }
+  ul.bots { list-style:none; padding:0; margin:0; display:grid; gap:10px; }
+  ul.bots li { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 14px; }
+  ul.bots strong { display:block; }
+  ul.bots span { color:var(--muted); font-size:.95rem; }
+  .first { border-color:var(--accent) !important; }
+  .tag { font-size:.75rem; color:var(--accent); font-weight:600; margin-left:6px; }
+  .prompt { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:14px; margin-bottom:12px; }
+  .prompt .for { font-size:.85rem; color:var(--muted); margin-bottom:6px; }
+  .row { display:flex; gap:8px; align-items:stretch; flex-wrap:wrap; }
+  code { flex:1 1 240px; display:block; padding:10px 12px; border-radius:8px; background:var(--bg);
+    border:1px solid var(--border); font:15px/1.4 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace; word-break:break-word; }
+  button { padding:10px 16px; border-radius:8px; border:1px solid var(--accent); background:var(--accent);
+    color:#fff; font:inherit; cursor:pointer; }
+  button:active { opacity:.85; }
+  footer { margin-top:36px; color:var(--muted); font-size:.85rem; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Dev System Launcher</h1>
+  <p class="lead">Start here if you want to brainstorm ideas or begin a new isolated project.</p>
+
+  <h2>Bots</h2>
+  <ul class="bots">
+    <li class="first"><strong>StartHere <span class="tag">Open this first</span></strong>
+      <span>Front door for brainstorming and exploring ideas (open this first if you don’t have a project yet).</span></li>
+    <li><strong>ProjectStarter</strong><span>Creates a fresh isolated project when you are ready.</span></li>
+    <li><strong>DevSupervisor</strong><span>Coordinates the project once it exists.</span></li>
+    <li><strong>DevCoordinator</strong><span>Hands tasks to the coding tools.</span></li>
+    <li><strong>ResearchCouncil</strong><span>Does research and analysis.</span></li>
+  </ul>
+
+  <h2>Copy-paste prompts</h2>
+  <div class="prompt">
+    <div class="for">1. Send to <strong>StartHere</strong></div>
+    <div class="row"><code>I want to brainstorm and explore ideas</code><button type="button">Copy</button></div>
+  </div>
+  <div class="prompt">
+    <div class="for">2. Send to <strong>ProjectStarter</strong> (replace [name])</div>
+    <div class="row"><code>Create a new isolated project called [name]</code><button type="button">Copy</button></div>
+  </div>
+
+  <footer>Every project lives in its own folder under /projects/[project-name]/.</footer>
+</main>
+<script>
+  document.querySelectorAll('.prompt button').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var text = btn.parentElement.querySelector('code').textContent;
+      var done = function () { btn.textContent = 'Copied'; setTimeout(function () { btn.textContent = 'Copy'; }, 1500); };
+      if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text).then(done);
+      } else {
+        var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta);
+        ta.select(); document.execCommand('copy'); document.body.removeChild(ta); done();
+      }
+    });
+  });
+</script>
+</body>
+</html>
